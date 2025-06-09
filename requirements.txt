@@ -3,3 +3,4 @@ uvicorn
 motor
 python-dotenv
 passlib[bcrypt]
+pydantic[email]
