@@ -1,23 +1,20 @@
 from fastapi import APIRouter, HTTPException
-from models.user import UserCreate, UserLogin
+from models.user import UserCreate
 from database import db
-from passlib.hash import bcrypt
+from security import hash_password  # 👈 Asegúrate de importar esto
 
 router = APIRouter()
 
-@router.post("/register")
-async def register(user: UserCreate):
-    if await db.usuarios.find_one({"email": user.email}):
-        raise HTTPException(status_code=400, detail="Email ya registrado")
-    hashed_password = bcrypt.hash(user.password)
-    user_dict = user.dict()
-    user_dict["password"] = hashed_password
-    await db.usuarios.insert_one(user_dict)
-    return {"message": "Usuario registrado con éxito"}
+@router.post("/registro")
+async def registrar_usuario(usuario: UserCreate):
+    # Verifica si ya existe el usuario
+    if await db.users.find_one({"email": usuario.email}):
+        raise HTTPException(status_code=400, detail="El usuario ya existe")
 
-@router.post("/login")
-async def login(user: UserLogin):
-    usuario = await db.usuarios.find_one({"email": user.email})
-    if not usuario or not bcrypt.verify(user.password, usuario["password"]):
-        raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    return {"message": "Inicio de sesión exitoso"}
+    # Hashear la contraseña
+    usuario_dict = usuario.dict()
+    usuario_dict["password"] = hash_password(usuario.password)
+
+    # Insertar en la base
+    result = await db.users.insert_one(usuario_dict)
+    return {"id": str(result.inserted_id), "message": "Usuario registrado"}
