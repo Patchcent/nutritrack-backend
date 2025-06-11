@@ -1,10 +1,6 @@
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
-from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
+MONGO_URL = "mongodb+srv://alexis_user:Patch1552@cluster0.xy1jrsb.mongodb.net/nutritrack?retryWrites=true&w=majority"
 
-load_dotenv()  # Cargar variables del .env
-
-MONGO_URL = os.getenv("MONGO_URL")
-
-client = AsyncIOMotorClient(MONGO_URL)
-db = client.nutritrack  # Base de datos llamada "nutritrack"
+MONGO_URL = os.getenv(MONGO_URL)
+db = client.get_default_database()  # Usará 'nutritrack' automáticamente

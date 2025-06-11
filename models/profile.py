@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 class UserProfile(BaseModel):
-    altura: float = Field(..., example=1.75)  # metros
-    peso: float = Field(..., example=70.5)    # kilogramos
-    calorias_diarias: int = Field(..., example=2000)
+    email: str
+    edad: int = 0
+    peso: float = 0.0
+    altura: float = 0.0
+    objetivos: str = ""
