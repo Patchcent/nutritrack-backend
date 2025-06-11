@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional  # ✅ Esto es correcto
+from typing import Optional 
 
 
 class UserProfile(BaseModel):

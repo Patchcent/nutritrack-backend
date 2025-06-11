@@ -9,6 +9,7 @@ router = APIRouter()
 @router.get("/test")
 async def test_endpoint():
     return {"message": "Router alimentos funcionando"}
+
 @router.post("/bulk", status_code=201)
 async def crear_varios_alimentos(alimentos: List[AlimentoCreate]):
     # Validar que no haya nombres repetidos en la lista
